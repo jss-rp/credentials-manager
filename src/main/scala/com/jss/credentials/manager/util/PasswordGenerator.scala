@@ -1,4 +1,4 @@
-package com.jss.credentials.manager
+package com.jss.credentials.manager.util
 
 import scala.util.Random
 import java.util.Arrays
@@ -13,8 +13,8 @@ object PasswordGenerator:
   private val numeralsArray = numerals.toCharArray
   private val alphabetLowercaseArray = alphabet.toCharArray
   private val specialCharactersArray = specialCharacters.toCharArray
-  private val alphabetUppercaseArray = alphabet.toCharArray().map(x => x.toUpper)
-  
+  private val alphabetUppercaseArray = alphabetLowercaseArray.map(x => x.toUpper)
+
   def generate(length: Int): String = {
     var availableCharactersArrays = ArrayBuffer[Array[Char]](
       numeralsArray,
@@ -22,20 +22,18 @@ object PasswordGenerator:
       alphabetUppercaseArray,
       specialCharactersArray
     )
-    
+
     generate(length, availableCharactersArrays)
   }
 
-  def generate(length: Int, specials: Boolean, numbers: Boolean, uppercases: Boolean,  lowercases: Boolean): String = {
+  def generate(length: Int, specials: Boolean, numbers: Boolean, uppercases: Boolean, lowercases: Boolean): String = {
     val availableCharactersArrays: ArrayBuffer[Array[Char]] = ArrayBuffer()
 
     if (specials) availableCharactersArrays += specialCharactersArray
     if (numbers) availableCharactersArrays += numeralsArray
-    if (uppercases) availableCharactersArrays += alphabetLowercaseArray
-    if (lowercases) availableCharactersArrays += alphabetUppercaseArray
-    
-    availableCharactersArrays.foreach { array => Arrays.toString(array)}
-    
+    if (uppercases) availableCharactersArrays += alphabetUppercaseArray
+    if (lowercases) availableCharactersArrays += alphabetLowercaseArray
+
     var password = generate(length, availableCharactersArrays)
     val allCharactersArray: Array[Char] = Array()
 
@@ -45,7 +43,7 @@ object PasswordGenerator:
 
     for ch <- password do {
       if (allCharactersArray contains (ch)) {
-       password = generate(length, specials, numbers, uppercases, lowercases)
+        password = generate(length, specials, numbers, uppercases, lowercases)
       }
     }
 
@@ -55,10 +53,10 @@ object PasswordGenerator:
   private def generate(length: Int, availableCharactersArrays: ArrayBuffer[Array[Char]]): String = {
     var password = ""
 
-    for i <- 0 to (length - 1) do
+    for i <- 0 to length do
       val selectedArray = availableCharactersArrays(Random.nextInt(availableCharactersArrays.size))
       password += pickRandomItemFromArray(selectedArray)
-    
+
     password
   }
 

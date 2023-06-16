@@ -1,6 +1,9 @@
 package com.jss.credentials.manager
 
-@main def hello: Unit =
-  val password = PasswordGenerator.generate(10)
-  println(password)
+import domain.Credential
+import cli.TerminalRunner
+import scala.collection.mutable
+import repository.impl.CredentialRepository
+import util.PasswordGenerator
 
+@main def hello: Unit = TerminalRunner.run(CredentialRepository)
