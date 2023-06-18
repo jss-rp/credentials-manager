@@ -26,13 +26,14 @@ object PasswordGenerator:
     generate(length, availableCharactersArrays)
   }
 
-  def generate(length: Int, specials: Boolean, numbers: Boolean, uppercases: Boolean, lowercases: Boolean): String = {
+  def generate(length: Int, specials: Boolean, numbers: Boolean, uppercases: Boolean): String = {
     val availableCharactersArrays: ArrayBuffer[Array[Char]] = ArrayBuffer()
 
     if (specials) availableCharactersArrays += specialCharactersArray
     if (numbers) availableCharactersArrays += numeralsArray
     if (uppercases) availableCharactersArrays += alphabetUppercaseArray
-    if (lowercases) availableCharactersArrays += alphabetLowercaseArray
+    
+    availableCharactersArrays += alphabetLowercaseArray
 
     var password = generate(length, availableCharactersArrays)
     val allCharactersArray: Array[Char] = Array()
@@ -43,7 +44,7 @@ object PasswordGenerator:
 
     for ch <- password do {
       if (allCharactersArray contains (ch)) {
-        password = generate(length, specials, numbers, uppercases, lowercases)
+        password = generate(length, specials, numbers, uppercases)
       }
     }
 

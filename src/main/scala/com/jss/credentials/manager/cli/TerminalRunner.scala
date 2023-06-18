@@ -8,8 +8,8 @@ import com.jss.credentials.manager.repository.Repository
 import com.jss.credentials.manager.util.PasswordGenerator
 
 object TerminalRunner {
-  private val bannerLength = 56
-  private val console = System.console()
+  protected val bannerLength = 56
+  protected val console = System.console()
 
   def run(credentialRepository: Repository[Credential]): Unit = {
     printBanner()
@@ -67,7 +67,7 @@ object TerminalRunner {
 
     print("\n\nGenerate password? [y/n] ")
     if (evaluateResponse(console)) {
-      var password = PasswordGeneratorRunner(console)
+      var password = PasswordGeneratorPrompter(console)
 
       return new Credential(username, password, null)
     }
@@ -103,7 +103,7 @@ object TerminalRunner {
     }
   }
 
-  object PasswordGeneratorRunner {
+  object PasswordGeneratorPrompter {
 
     def apply(console: java.io.Console): String = {
       printBanner()
@@ -120,10 +120,7 @@ object TerminalRunner {
       print("\nIt must contain uppercase characters? [y/n] ")
       val uppercases = evaluateResponse(console)
 
-      print("\nIt must contain lowercase characters? [y/n] ")
-      val lowercases = evaluateResponse(console)
-
-      var password = PasswordGenerator.generate(length.toInt, specials, numbers, uppercases, lowercases)
+      var password = PasswordGenerator.generate(length.toInt, specials, numbers, uppercases)
 
       println(s"\nGenerated password: ${password}")
 
@@ -132,7 +129,7 @@ object TerminalRunner {
       if(evaluateResponse(console)) {
         return password
       } else {
-        PasswordGeneratorRunner(console)
+        PasswordGeneratorPrompter(console)
       }
     }
   }
