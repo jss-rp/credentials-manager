@@ -54,7 +54,7 @@ object PasswordGenerator:
   private def generate(length: Int, availableCharactersArrays: ArrayBuffer[Array[Char]]): String = {
     var password = ""
 
-    for i <- 0 to length do
+    for i <- 0 to (length - 1) do
       val selectedArray = availableCharactersArrays(Random.nextInt(availableCharactersArrays.size))
       password += pickRandomItemFromArray(selectedArray)
 
