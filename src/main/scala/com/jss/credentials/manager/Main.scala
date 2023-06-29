@@ -6,4 +6,4 @@ import scala.collection.mutable
 import repository.impl.CredentialRepository
 import util.PasswordGenerator
 
-@main def hello: Unit = TerminalRunner.run(CredentialRepository)
+@main def hello(): Unit = TerminalRunner.run(CredentialRepository)

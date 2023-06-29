@@ -5,7 +5,7 @@ import java.util.Arrays
 import scala.collection.mutable.Set
 import scala.collection.mutable.ArrayBuffer
 
-object PasswordGenerator:
+object PasswordGenerator {
   private val alphabet = "abcdefghijklmnopqrstuvwyz"
   private val numerals = "0123456789"
   private val specialCharacters = "!@#$%&*()=+[.,]_-"
@@ -32,14 +32,16 @@ object PasswordGenerator:
     if (specials) availableCharactersArrays += specialCharactersArray
     if (numbers) availableCharactersArrays += numeralsArray
     if (uppercases) availableCharactersArrays += alphabetUppercaseArray
-    
+
     availableCharactersArrays += alphabetLowercaseArray
 
     var password = generate(length, availableCharactersArrays)
     val allCharactersArray: Array[Char] = Array()
 
     availableCharactersArrays.foreach { array =>
-      for i <- array do { allCharactersArray ++ String.valueOf(i) }
+      for i <- array do {
+        allCharactersArray ++ String.valueOf(i)
+      }
     }
 
     for ch <- password do {
@@ -54,7 +56,7 @@ object PasswordGenerator:
   private def generate(length: Int, availableCharactersArrays: ArrayBuffer[Array[Char]]): String = {
     var password = ""
 
-    for i <- 0 to (length - 1) do
+    for i <- 0 until length do
       val selectedArray = availableCharactersArrays(Random.nextInt(availableCharactersArrays.size))
       password += pickRandomItemFromArray(selectedArray)
 
@@ -62,3 +64,4 @@ object PasswordGenerator:
   }
 
   private def pickRandomItemFromArray(array: Array[Char]): Char = array(Random.nextInt(array.length))
+}
