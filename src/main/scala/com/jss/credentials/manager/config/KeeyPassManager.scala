@@ -3,7 +3,8 @@ package com.jss.credentials.manager.config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.Logger
 import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase
-import org.linguafranca.pwdb.kdbx.{KdbxCreds, KdbxStreamFormat}
+import org.linguafranca.pwdb.kdbx.KdbxCreds
+import org.linguafranca.pwdb.kdbx.stream_3_1.KdbxStreamFormat
 
 import java.io.*
 
@@ -37,7 +38,7 @@ object KeeyPassManager {
 
     def createDatabase(outputStream: OutputStream):Unit = {
       result = SimpleDatabase()
-      result.save(new KdbxStreamFormat(), credentials, outputStream)
+      result.save(credentials, outputStream)
       outputStream.close()
     }
 
@@ -51,6 +52,6 @@ object KeeyPassManager {
 
   def getDatabase: SimpleDatabase = database
 
-  def updateDatabase(): Unit = database.save(new KdbxStreamFormat(), credentials, FileOutputStream(file))
+  def updateDatabase(): Unit = database.save(credentials, FileOutputStream(file))
 }
 

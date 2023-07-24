@@ -3,7 +3,6 @@ package com.jss.credentials.manager.repository.impl
 import com.jss.credentials.manager.config.KeeyPassManager
 import com.jss.credentials.manager.repository.Repository
 import com.jss.credentials.manager.domain.Credential
-import org.linguafranca.pwdb.kdb.KdbDatabase
 import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase
 
 import scala.collection.mutable
@@ -14,7 +13,6 @@ object CredentialRepository extends Repository[Credential] {
 
   override def save(credential: Credential): Credential = {
     val entry = database.newEntry()
-
     entry.setUsername(credential.username)
     entry.setPassword(credential.password)
     database.getRootGroup.addEntry(entry)
