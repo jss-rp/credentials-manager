@@ -1,11 +1,10 @@
 package com.jss.credentials.manager.cli
 
-import java.util.Scanner
-import scala.annotation.switch
 import com.jss.credentials.manager.domain.Credential
-import scala.collection.mutable
 import com.jss.credentials.manager.repository.Repository
 import com.jss.credentials.manager.util.PasswordGenerator
+
+import scala.collection.mutable
 
 object TerminalRunner {
   protected val bannerLength = 56
