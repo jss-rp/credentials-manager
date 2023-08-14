@@ -2,22 +2,22 @@ package com.jss.credentials.manager.config
 
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.Logger
-import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase
 import org.linguafranca.pwdb.kdbx.KdbxCreds
-import org.linguafranca.pwdb.kdbx.stream_3_1.KdbxStreamFormat
+import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase
 
 import java.io.*
 
-object KeeyPassManager {
+object KeeyPassManager:
+  def apply(credential: String) = new KeeyPassManager(credential)
+
+class KeeyPassManager(val credential: String):
   private val logger = Logger(getClass.getName)
   private val config = ConfigFactory.load().getConfig("keeypass")
   private val filePath = config.getString("filePath")
-  private val secret = config.getString("secret")
   private val file = File(filePath)
 
-  private val credentials = KdbxCreds(secret.getBytes)
-
-  private val database: SimpleDatabase = {
+  val database: SimpleDatabase =
+    val credentials = KdbxCreds(credential.getBytes)
     var result: SimpleDatabase = null
 
     try
@@ -29,6 +29,7 @@ object KeeyPassManager {
         createFile(file)
         createDatabase(FileOutputStream(file))
     catch
+      case error: IllegalStateException => logger.debug("Username and/or password are incorrects. Error :", error)
       case error: EOFException =>
         logger.warn("Corrupted file! Creating another...")
         file.delete()
@@ -36,7 +37,7 @@ object KeeyPassManager {
         createDatabase(FileOutputStream(file))
       case error: IOException => logger.error("Fail on reading KeeyPass file. Error: ", error)
 
-    def createDatabase(outputStream: OutputStream):Unit = {
+    def createDatabase(outputStream: OutputStream): Unit = {
       result = SimpleDatabase()
       result.save(credentials, outputStream)
       outputStream.close()
@@ -48,10 +49,7 @@ object KeeyPassManager {
     }
 
     result
-  }
 
-  def getDatabase: SimpleDatabase = database
 
-  def updateDatabase(): Unit = database.save(credentials, FileOutputStream(file))
-}
+  def updateDatabase(): Unit = database.save(KdbxCreds(credential.getBytes), FileOutputStream(file))
 

@@ -17,14 +17,10 @@ object LoginPanel:
       private val loginPanel = this
       contents += usernameField
       contents += passwordField
-
       contents += new BorderPanel {
         val button: Button = new Button("Login") {
           reactions += {
-            case event.ButtonClicked(_) =>
-              callback.apply(credential, loginPanel)
-              logger.debug("You're logged in")
-              passwordField.peer.setText("")
+            case event.ButtonClicked(_) => callback.apply(credential, loginPanel)
           }
         }
 
@@ -35,4 +31,4 @@ object LoginPanel:
   def credential: String = s"${usernameField.text}:${passwordField.password.mkString}"
 
 
-private class LoginPanel(val orientation: Orientation.Value = Orientation.Vertical) extends BoxPanel(orientation: Orientation.Value)
+class LoginPanel(val orientation: Orientation.Value = Orientation.Vertical) extends BoxPanel(orientation: Orientation.Value)
